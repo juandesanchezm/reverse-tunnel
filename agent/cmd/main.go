@@ -17,11 +17,12 @@ const usage = `
 Reverse tunnel agent
 
 Usage:
-  rtun [-f <config>]
+  rtun-server [-f <config>] [-s <config>]
 
 Options:
   -h, --help   Show usage information and exit.
   -f <config>  Specify agent configuration file.
+  -s <config>  Specify agent configuration string.
 `
 
 const (
@@ -46,6 +47,10 @@ func run(options docopt.Opts) error {
 
 	if path, err := options.String("-f"); err == nil {
 		if err := config.Load(path, &conf); err != nil {
+			return err
+		}
+	} else if data, err := options.String("-s"); err == nil {
+		if err := config.LoadString(data, &conf); err != nil {
 			return err
 		}
 	} else {

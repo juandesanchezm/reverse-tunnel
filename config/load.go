@@ -23,3 +23,9 @@ func Load(path string, conf interface{}) error {
 
 	return yaml.Unmarshal(data, conf)
 }
+
+// Load loads a YAML document from a string and fills in corresponding fields of
+// conf variable. Default values given in the variable are honored.
+func LoadString(data string, conf interface{}) error {
+	return yaml.Unmarshal([]byte(data), conf)
+}

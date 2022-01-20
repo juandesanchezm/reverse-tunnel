@@ -13,11 +13,12 @@ const usage = `
 Reverse tunnel gateway server
 
 Usage:
-  rtun-server [-f <config>]
+  rtun-server [-f <config>] [-s <config>]
 
 Options:
   -h, --help   Show usage information and exit.
   -f <config>  Specify gateway configuration file.
+  -s <config>  Specify gateway configuration string.
 `
 
 const defaultConfigPath = "rtun-server.yml"
@@ -39,6 +40,10 @@ func run(options docopt.Opts) error {
 
 	if path, err := options.String("-f"); err == nil {
 		if err := config.Load(path, &conf); err != nil {
+			return err
+		}
+	} else if data, err := options.String("-s"); err == nil {
+		if err := config.LoadString(data, &conf); err != nil {
 			return err
 		}
 	} else {
